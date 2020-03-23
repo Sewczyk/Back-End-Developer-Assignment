@@ -2,6 +2,7 @@ package com.polsource.BackEndDeveloperAssignment.Services;
 
 import com.polsource.BackEndDeveloperAssignment.Domain.Note;
 import com.polsource.BackEndDeveloperAssignment.Repository.NoteRepository;
+import org.aspectj.weaver.ast.Not;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,9 +23,16 @@ public class NoteVersionService {
         return noteRepository.findAll();
     }
 
+   //public List<Note>findAllNotesByID(Long id){
+   //    return noteRepository.getNoteHistoryByID(id);
+   //}
+
     public Optional<Note> getNoteByID(Long id){
         return noteRepository.findById(id);
     }
 
+    public List<Note> getNoteHistoryByID(Long id){
+        return noteRepository.getNoteHistoryByID(id);
+    }
 
 }

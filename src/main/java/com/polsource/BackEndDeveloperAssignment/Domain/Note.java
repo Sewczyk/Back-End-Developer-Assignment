@@ -35,6 +35,7 @@ public class Note {
         this.title = title;
         this.content = content;
         this.created = created;
+        this.modified = Instant.now();
         this.version = version;
     }
 
@@ -66,4 +67,7 @@ public class Note {
         return version;
     }
 
+    public void setDeleted(boolean deleted) {
+        isDeleted = deleted;
+    }
 }

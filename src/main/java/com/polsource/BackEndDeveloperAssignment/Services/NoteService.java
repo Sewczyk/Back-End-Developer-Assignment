@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -22,8 +23,23 @@ public class NoteService {
         return noteRepository.save(toSave);
     }
 
-    public Note modifyExistingNote(Note note){
-        Note toSave = new Note(note.getNoteID(),note.getTitle(),note.getContent(),note.getCreated(),note.getVersion()+1);
+    public void deleteNote(Long id){
+        Note toDelete = noteRepository.getOne(id);
+        toDelete.setDeleted(true);
+        noteRepository.save(toDelete);
+    }
+
+    public List<Note> getAllNonDeletedNotes(){
+        return noteRepository.getAllNonDeletedNotes();
+    }
+
+    public Note getNoteByID(Long id){
+        return noteRepository.getOneNoteByID(id);
+    }
+
+    public Note modifyExistingNote(Long id, Note note){
+        Note previousVersion = noteRepository.getOne(id);
+        Note toSave = new Note(id,note.getTitle(),note.getContent(),previousVersion.getCreated(),previousVersion.getVersion()+1);
         return noteRepository.save(toSave);
     }
 }
