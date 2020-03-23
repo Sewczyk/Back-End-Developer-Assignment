@@ -25,13 +25,7 @@ public class NoteController {
     {
         return noteService.insertNewNote(note);
     }
-/*
-    @GetMapping("/notes")
-    public List<Note>getAllNotes()
-    {
-        return
-    }
-*/
+
     @PutMapping("/notes/{id}")
     public void deleteNote(@PathVariable(value = "id") @Valid Long id){
          noteService.deleteNote(id);
