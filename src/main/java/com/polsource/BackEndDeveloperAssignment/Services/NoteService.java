@@ -1,41 +1,29 @@
 package com.polsource.BackEndDeveloperAssignment.Services;
 
-import com.polsource.BackEndDeveloperAssignment.DataAccessObjects.NoteDAOInterface;
-import com.polsource.BackEndDeveloperAssignment.Model.Note;
+import com.polsource.BackEndDeveloperAssignment.Domain.Note;
+import com.polsource.BackEndDeveloperAssignment.Repository.NoteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.Optional;
 
 @Service
 public class NoteService {
     @Autowired
-    private final NoteDAOInterface noteDAOInterface;
+    private final NoteRepository noteRepository;
 
-    public NoteService(@Qualifier("h2notedatabase") NoteDAOInterface noteDAOInterface) {
-        this.noteDAOInterface = noteDAOInterface;
+    public NoteService(NoteRepository noteRepository) {
+        this.noteRepository = noteRepository;
     }
 
-    public void insertNote(Note note) {
-        noteDAOInterface.insertNote(note);
+    public Note insertNewNote(Note note){
+        Note toSave = new Note(note.getTitle(),note.getContent());
+        return noteRepository.save(toSave);
     }
 
-
-    public void modifyNote(Note note) {
-        noteDAOInterface.insertNote(note);
+    public Note modifyExistingNote(Note note){
+        Note toSave = new Note(note.getNoteID(),note.getTitle(),note.getContent(),note.getCreated(),note.getVersion()+1);
+        return noteRepository.save(toSave);
     }
-
-    public void deleteNote(Note note) {
-        noteDAOInterface.deleteNote(note);
-    }
-
-    public void readNote(Note note) {
-        noteDAOInterface.readNote(note);
-    }
-
-    public List<Note> getAllNotes(){
-        return noteDAOInterface.readAllNotes();
-    }
-
 }

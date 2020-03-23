@@ -1,32 +1,37 @@
 package com.polsource.BackEndDeveloperAssignment.Controllers;
 
-import com.polsource.BackEndDeveloperAssignment.Model.Note;
+import com.polsource.BackEndDeveloperAssignment.Domain.Note;
+import com.polsource.BackEndDeveloperAssignment.Repository.NoteRepository;
 import com.polsource.BackEndDeveloperAssignment.Services.NoteService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.List;
 
-
-@RequestMapping("API/Note")
 @RestController
 public class NoteController {
-
-    private final NoteService noteService;
     @Autowired
+    private final NoteService noteService;
+
     public NoteController(NoteService noteService) {
         this.noteService = noteService;
     }
-    @GetMapping("/all")
-    public List<Note> getAllNotes(){
-        return noteService.getAllNotes();
+
+    @PostMapping("/notes")
+    public Note insertNewNote(@Valid @RequestBody Note note)
+    {
+        return noteService.insertNewNote(note);
     }
 
-    public void createNote(@RequestBody Note note){
-        noteService.insertNote(note);
+
+
+    @PostMapping("/notes/{id}")
+    public Note modifyExistingNote(@PathVariable(value = "id") @Valid @RequestBody Note note){
+        return noteService.modifyExistingNote(note);
     }
 
 }
